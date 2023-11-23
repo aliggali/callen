@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/callen/static/css/main.100ee6b0.css",
+    "main.js": "/callen/static/js/main.aa1aea00.js",
+    "static/js/787.3b0add8b.chunk.js": "/callen/static/js/787.3b0add8b.chunk.js",
+    "static/media/CentraNo2-Bold.ttf": "/callen/static/media/CentraNo2-Bold.2faff7f7d3fc92a2fcd9.ttf",
+    "static/media/CentraNo2-Medium.ttf": "/callen/static/media/CentraNo2-Medium.f94be5b326d78bb32b95.ttf",
+    "static/media/CentraNo2-Book.ttf": "/callen/static/media/CentraNo2-Book.2b143fa4b734a3584043.ttf",
+    "static/media/logono.png": "/callen/static/media/logono.4a3973e2c2ff63235be7.png",
+    "static/media/logo-bg-white.png": "/callen/static/media/logo-bg-white.5599f9e27a6c9fe77766.png",
+    "index.html": "/callen/index.html",
+    "main.100ee6b0.css.map": "/callen/static/css/main.100ee6b0.css.map",
+    "main.aa1aea00.js.map": "/callen/static/js/main.aa1aea00.js.map",
+    "787.3b0add8b.chunk.js.map": "/callen/static/js/787.3b0add8b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.100ee6b0.css",
+    "static/js/main.aa1aea00.js"
+  ]
+}
