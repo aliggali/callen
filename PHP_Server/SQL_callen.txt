@@ -1,0 +1,220 @@
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL,
+    email VARCHAR(30) NOT NULL,
+    password VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE events (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    title VARCHAR(50) NOT NULL,
+    description VARCHAR(255),
+    color VARCHAR(15) DEFAULT 'green' NOT NULL,
+    start DATE NOT NULL,
+    end DATE NOT NULL,
+    save TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+    task BOOL DEFAULT 0 NOT NULL,
+    specail BOOL DEFAULT 0 NOT NULL,
+    kanban_id INT DEFALT 0 NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE kanban (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    status VARCHAR(30),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+);
+
+Create Table kanbanevents(
+id INT PRIMARY KEY AUTO_INCREMENT,
+evnets_id INT,
+user_id INT,
+kanban_id INT,
+title VARCHAR(50) NOT NULL,
+description VARCHAR(255),
+end DATE NOT NULL,
+start DATE NOT NULL,
+status VARCHAR(30),
+FOREIGN KEY (events_id) REFERENCES events(id)
+FOREIGN KEY (user_id) REFERENCES events(user_id)
+FOREIGN KEY (kanban_id) REFERENCES kanban(id)
+);
+
+create table labels(
+id INT PRIMARY KEY AUTO_INCREMENT,
+kanbanevents_id INT,
+user_id INT,
+text VARCHAR(20) not null,
+color INT not null,
+FOREIGN KEY (user_id) REFERENCES events(user_id)
+FOREIGN KEY (kanbanevents_id) REFERENCES kanbanevents(id)
+)
+
+create table tasks(
+id INT PRIMARY KEY AUTO_INCREMENT,
+kanbanevents_id INT,
+user_id INT,
+title VARCHAR(20) not null,
+FOREIGN KEY (user_id) REFERENCES events(user_id)
+FOREIGN KEY (kanbanevents_id) REFERENCES kanbanevents(id)
+)
+
+
+CREATE TRIGGER `after_update_kanban_id` AFTER UPDATE ON `kanban`
+ FOR EACH ROW BEGIN
+    IF NEW.status = 'Todo' THEN
+        UPDATE events
+        SET kanban_id = NEW.id
+        WHERE user_id = NEW.user_id AND status = 'Todo';
+    END IF;
+END
+
+CREATE TRIGGER `events_after_insert_trigger` AFTER INSERT ON `events`
+ FOR EACH ROW BEGIN
+    -- Check if the task is 1
+    IF NEW.task = 1 THEN
+        -- Insert into kanbanevents table with the new events_id
+        INSERT INTO kanbanevents (events_id, user_id, kanban_id, title, description, end, start, status)
+        VALUES (NEW.id, NEW.user_id, NEW.kanban_id, NEW.title, NEW.description, NEW.end, NEW.start, 'ToDo');
+    END IF;
+END
+
+CREATE TRIGGER `events_after_update_trigger` AFTER UPDATE ON `events`
+ FOR EACH ROW BEGIN
+
+DECLARE existing_rows INT;
+SELECT COUNT(*) INTO existing_rows FROM kanbanevents WHERE events_id = NEW.id;
+
+    IF NEW.task = 1 OR (OLD.title <> NEW.title OR OLD.description <> NEW.description OR OLD.start <> NEW.start OR OLD.end <> NEW.end) THEN
+        -- Check if events_id already exists in kanbanevents
+
+        IF existing_rows > 0 THEN
+            -- Update existing row in kanbanevents
+            UPDATE kanbanevents
+            SET title = NEW.title,
+                description = NEW.description,
+                end = NEW.end,
+                start = NEW.start,
+                status = 'ToDo'
+            WHERE events_id = NEW.id;
+        ELSE
+            -- Insert new row into kanbanevents
+            INSERT INTO kanbanevents (events_id, user_id, kanban_id, title, description, end, start, status)
+            VALUES (NEW.id, NEW.user_id, NEW.kanban_id, NEW.title, NEW.description, NEW.end, NEW.start, 'ToDo');
+        END IF;
+    -- Check if task is updated to 0
+    ELSEIF NEW.task = 0 THEN
+        -- Delete rows from kanbanevents where events_id matches NEW.id
+        DELETE FROM kanbanevents WHERE events_id = NEW.id LIMIT 1;
+    END IF;
+END
+
+CREATE TRIGGER `events_before_insert_trigger` BEFORE INSERT ON `events`
+ FOR EACH ROW BEGIN
+    DECLARE todo_id INT;
+    DECLARE todo_name VARCHAR(20);
+    DECLARE last_event_id INT;
+
+    -- Check if the task is 1
+    IF NEW.task = 1 THEN
+        -- Check if user has 'Todo' status in kanban table
+        SELECT id, status INTO todo_id, todo_name
+        FROM kanban
+        WHERE user_id = NEW.user_id AND status = 'ToDo';
+
+        -- If 'Todo' status exists, update NEW.kanban_id
+        IF todo_id IS NOT NULL THEN
+            SET NEW.kanban_id = todo_id;
+        ELSE
+            -- If 'Todo' status does not exist, create it
+            -- Insert 'Todo' status into kanban table
+            INSERT INTO kanban (user_id, status)
+            VALUES (NEW.user_id, 'Todo');
+
+            -- Get the id of the newly inserted 'Todo' status
+            SET todo_id = LAST_INSERT_ID();
+
+            SET NEW.kanban_id = todo_id;
+        END IF;
+    END IF;
+END
+
+
+CREATE TRIGGER `events_before_update_trigger` BEFORE UPDATE ON `events`
+ FOR EACH ROW BEGIN
+    DECLARE kanbanID INT;
+    DECLARE kanbanStatus VARCHAR(20);
+
+    IF NEW.task = 1 THEN
+        -- Check if user has 'Todo' status in kanban table
+        SELECT id, status INTO kanbanID, kanbanStatus
+        FROM kanban
+        WHERE user_id = NEW.user_id AND status = 'ToDo';
+
+        IF kanbanID IS NOT NULL THEN
+            SET NEW.kanban_id = kanbanID;
+        ELSE
+            -- If 'Todo' status does not exist, create it
+            -- Insert 'Todo' status into kanban table
+            INSERT INTO kanban (user_id, status)
+            VALUES (NEW.user_id, 'Todo');
+
+            -- Get the id of the newly inserted 'Todo' status
+            SET kanbanID = LAST_INSERT_ID();
+
+            SET NEW.kanban_id = kanbanID;
+        END IF;
+    END IF;
+END
+
+
+CREATE TRIGGER `events_delete_trigger` AFTER DELETE ON `events`
+ FOR EACH ROW BEGIN
+  -- Delete corresponding record from kanbanevents
+  DELETE FROM kanbanevents
+  WHERE user_id = OLD.user_id AND events_id = OLD.id;
+END
+
+CREATE TRIGGER `kanban_after_update_trigger` AFTER UPDATE ON `kanban`
+ FOR EACH ROW BEGIN
+  -- Check if the 'status' column is updated
+  IF NEW.status <> OLD.status THEN
+    -- Update the 'status' column in kanbanevents where kanban_id matches the updated kanban id
+    UPDATE kanbanevents
+    SET status = NEW.status
+    WHERE kanban_id = NEW.id;
+  END IF;
+END
+
+CREATE TRIGGER `kanbanevents_before_delete_trigger` BEFORE DELETE ON `kanbanevents`
+ FOR EACH ROW BEGIN
+    DELETE FROM labels WHERE card_id = OLD.id;
+     DELETE FROM tasks WHERE card_id = OLD.id;
+END
+
+
+CREATE TRIGGER `kanbanevents_delete_trigger` AFTER DELETE ON `kanbanevents`
+ FOR EACH ROW BEGIN
+    -- Check if the deleted row in the events table has task = 1
+    IF (SELECT task FROM events WHERE id = OLD.events_id) = 1 THEN
+        -- Update events table setting task to 0
+        UPDATE events
+        SET task = 0
+        WHERE id = OLD.events_id;
+    END IF;
+
+    -- Delete related records from labels and tasks tables
+    DELETE FROM labels WHERE card_id = OLD.events_id;
+    DELETE FROM tasks WHERE card_id = OLD.events_id;
+END
+
+
+
+CREATE TRIGGER `update_events_title` AFTER UPDATE ON `kanbanevents`
+ FOR EACH ROW BEGIN
+    UPDATE events
+    SET title = NEW.title, description = NEW.description
+    WHERE id = NEW.events_id;
+END
