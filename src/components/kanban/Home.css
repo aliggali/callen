@@ -1,0 +1,62 @@
+/* YourComponent.css */
+
+.boards-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.board {
+  width: 30%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.board h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.boards-container table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.boards-container th,
+.boards-container td {
+  border: 1px solid #fff;
+  padding: 8px;
+  text-align: left;
+}
+
+.boards-container th {
+  background-color: #f9fafb; /* Header background color */
+  color: #020202;
+}
+
+.footer-container {
+  background-image: linear-gradient(
+    to bottom,
+    #e2e191,
+    #badfa5,
+    #a1d8b9,
+    #9bcdc5,
+    #a3c0c4
+  );
+  color: #ecf0f1;
+  padding: 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.logo {
+  width: 50px; /* Adjust the width of your logo */
+  height: auto; /* Maintain the aspect ratio */
+  margin-right: 10px; /* Add some margin to the right of the logo */
+}

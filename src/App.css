@@ -1,0 +1,303 @@
+/************ Custom Font ************/
+@font-face {
+  font-family: Centra;
+  src: url("./assets/font/CentraNo2-Bold.ttf");
+  font-weight: 700;
+}
+@font-face {
+  font-family: Centra;
+  src: url("./assets/font/CentraNo2-Medium.ttf");
+  font-weight: 500;
+}
+@font-face {
+  font-family: Centra;
+  src: url("./assets/font/CentraNo2-Book.ttf");
+  font-weight: 400;
+}
+
+/************ Default Css ************/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 75px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* style.css */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+#calendar {
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+.calendar-top {
+  margin-top: 150px;
+}
+.modal-container {
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050 !important; /* Adjust the z-index as needed */
+  /* Add any other styles you need */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+.app {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-name {
+  padding-right: 10px;
+  float: left;
+  cursor: none;
+}
+
+.namebox {
+}
+
+/* Navbar */
+/************ Navbar Css ************/
+
+nav.navbar {
+  background-image: linear-gradient(
+    to top,
+    #fafaf1,
+    #e4ece1,
+    #cdded5,
+    #b7cfcb,
+    #a3c0c4
+  );
+  padding: 18px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 5;
+  transition: 0.32s ease-in-out;
+}
+.nav-name {
+  color: #67595e;
+  text-align: center;
+  font-size: 12px;
+  padding: 0 5px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+nav.navbar.scrolled {
+  padding: 0px 0;
+  background-image: linear-gradient(
+    to right top,
+    #a3c0c4,
+    #9bcdc5,
+    #a1d8b9,
+    #badfa5,
+    #e2e191
+  );
+}
+nav.navbar a.navbar-brand {
+  width: 9%;
+}
+nav.navbar .navbar-nav .nav-link.navbar-link {
+  font-weight: 500;
+  color: #67595e !important;
+  letter-spacing: 0.8px;
+  padding: 0 25px;
+  font-size: 18px;
+  opacity: 0.75;
+}
+nav.navbar .navbar-nav a.nav-link.navbar-link:hover,
+nav.navbar .navbar-nav a.nav-link.navbar-link.active {
+  opacity: 1;
+}
+span.navbar-text {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-text button {
+  font-weight: 700;
+  color: #a49393;
+  border: 1px solid #fff;
+  padding: 18px 34px;
+  font-size: 18px;
+  margin-left: 18px;
+  position: relative;
+  background-color: transparent;
+  transition: 0.3s ease-in-out;
+}
+.navbar-text button span {
+  z-index: 1;
+}
+.navbar-text button::before {
+  content: "";
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  background-color: #a49393;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  transition: 0.3s ease-in-out;
+}
+.navbar-text button:hover {
+  color: #67595e;
+}
+.navbar-text button:hover::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+nav.navbar .navbar-toggler:active,
+nav.navbar .navbar-toggler:focus {
+  outline: none;
+  box-shadow: none;
+}
+nav.navbar .navbar-toggler-icon {
+  width: 24px;
+  height: 17px;
+  background-image: none;
+  position: relative;
+  border-bottom: 2px solid #fff;
+  transition: all 300ms linear;
+  top: -2px;
+}
+nav.navbar .navbar-toggler-icon:focus {
+  border-bottom: 2px solid #fff;
+}
+nav.navbar .navbar-toggler-icon:after,
+nav.navbar .navbar-toggler-icon:before {
+  width: 24px;
+  position: absolute;
+  height: 2px;
+  background-color: #fff;
+  top: 0;
+  left: 0;
+  content: "";
+  z-index: 2;
+  transition: all 300ms linear;
+}
+nav.navbar .navbar-toggler-icon:after {
+  top: 8px;
+}
+nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:after {
+  transform: rotate(45deg);
+  background-color: #fff;
+  height: 2px;
+}
+nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon:before {
+  transform: translateY(8px) rotate(-45deg);
+  background-color: #fff;
+  height: 2px;
+}
+nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+  border-color: transparent;
+}
+
+.logout-btn {
+  background-color: #a3c0c4;
+  border: 1px solid #e2e191;
+}
+.logout-btn:hover {
+  background-color: #e2e191;
+  border: 1px solid #a3c0c4;
+}
+/* -----------------------------------------Navbar_End--------------------------------- */
+
+/*-----------Home-------------*/
+.home-top {
+  margin-top: 160px;
+}
+.app_navbar {
+  width: 100%;
+  padding: 20px 30px;
+  border-bottom: 1px solid #ccc;
+}
+
+.app_outer {
+  margin-top: 150px;
+  flex: 1;
+  width: 95%;
+  height: 630px;
+  overflow-x: auto;
+}
+
+.app_boards {
+  padding: 20px;
+  padding-bottom: 0;
+  height: 100%;
+  min-width: fit-content;
+  display: flex;
+  gap: 30px;
+}
+
+.app_boards_board {
+  min-width: 290px;
+  width: 290px;
+}
+
+.app_boards_board_add {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 1px 2px 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.app_boards_board_add:hover {
+  box-shadow: 1px 2px 0 1px #ccc;
+}
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Adjust as needed */
+}
+
+.create-todo-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #A3C0C4;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-todo-button:hover {
+  background-color: #E2E191;
+}
