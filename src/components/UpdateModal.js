@@ -2,19 +2,25 @@ import React, { useState, useCallback } from "react";
 import { Button, Modal, Form, Container } from "react-bootstrap";
 import { ChromePicker } from "react-color";
 
-export const UpdateModal = ({ selectedEvent, show, onHide, handelevents }) => {
+export const UpdateModal = ({
+  selectedEvent,
+  show,
+  close,
+  onHide,
+  handelevents,
+}) => {
   //Split the time and date of the start and end dates
   const startTimeArray = selectedEvent.start.split(" ");
   const startDate = startTimeArray[0];
   const startTimeOnly = startTimeArray[1];
-  //console.log("startdate:", startDate);
-  //console.log("startTimeOnly:", startTimeOnly);
+  console.log("startdate:", startDate);
+  console.log("startTimeOnly:", startTimeOnly);
 
   const endTimeArray = selectedEvent.end.split(" ");
   const endDate = endTimeArray[0];
   const endTimeOnly = endTimeArray[1];
-  //console.log("endDate:", startDate);
-  //console.log("endTimeOnly:", startTimeOnly);
+  console.log("endDate:", startDate);
+  console.log("endTimeOnly:", startTimeOnly);
 
   const [color, setColor] = useState(selectedEvent.color);
   const [formData, setFormData] = useState({
@@ -43,12 +49,12 @@ export const UpdateModal = ({ selectedEvent, show, onHide, handelevents }) => {
   }, []); // change format color to hex
 
   const handleTask = () => {
-    const newTaskValue = formData.task === 1 ? 0 : 1; // Toggle between 0 and 1
+    const newTaskValue = formData.task == 1 ? 0 : 1; // Toggle between 0 and 1
     setFormData({ ...formData, task: newTaskValue });
   }; //task option
 
   const handleSpecial = () => {
-    const newSpecialValue = formData.special === 1 ? 0 : 1; // Toggle between 0 and 1
+    const newSpecialValue = formData.special == 1 ? 0 : 1; // Toggle between 0 and 1
     setFormData({ ...formData, special: newSpecialValue });
   }; //special option
 
@@ -109,8 +115,10 @@ export const UpdateModal = ({ selectedEvent, show, onHide, handelevents }) => {
         }
       })
       .catch((error) => console.error("Error creating event:", error));
-    window.location.replace("/calendar");
-    //handelevents();
+    //reload data
+    handelevents();
+    window.location.reload();
+    //window.location.replace("/calendar");
     // Close the modal
     onHide();
   };
@@ -140,10 +148,10 @@ export const UpdateModal = ({ selectedEvent, show, onHide, handelevents }) => {
       .then((data) => {
         if (!data.success) {
           console.error(data.message);
-        } else {
         }
       })
       .catch((error) => console.error("Error deleting event:", error));
+    //reload data
     handelevents();
     onHide();
   };
