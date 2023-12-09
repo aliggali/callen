@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Board.css";
 import { MoreHorizontal } from "react-feather";
 import Card from "../Card/Card";
+import Editable from "../Editable/Editable";
 import Dropdown from "../Dropdown/Dropdown";
 
 function Board(props) {
@@ -56,18 +57,31 @@ function Board(props) {
       </div>
       <div className="board_cards custom-scroll">
         {props.board?.cards && props.board.cards.length > 0 ? (
-          props.board.cards.map((item) => (
-            <Card
-              key={item.card_id}
-              card={item}
-              userId={props.userId}
-              boardId={props.board?.kanban_id}
-              handleDragEnd={props.handleDragEnd}
-              handleDragEnter={props.handleDragEnter}
-              updateCard={props.updateCard}
-              fetchEventsFromServer={props.fetchEventsFromServer}
-            />
-          ))
+          props.board.cards.map((item) =>
+            item.card_id != null ? (
+              <Card
+                key={item.card_id}
+                card={item}
+                userId={props.userId}
+                boardId={props.board?.kanban_id}
+                handleDragEnd={props.handleDragEnd}
+                handleDragEnter={props.handleDragEnter}
+                updateCard={props.updateCard}
+                fetchEventsFromServer={props.fetchEventsFromServer}
+              />
+            ) : (
+              <Card
+                key={item.card_id}
+                card={item}
+                userId={props.userId}
+                boardId={props.board?.kanban_id}
+                handleDragEnd={props.handleDragEnd}
+                handleDragEnter={props.handleDragEnter}
+                updateCard={props.updateCard}
+                fetchEventsFromServer={props.fetchEventsFromServer}
+              />
+            )
+          )
         ) : (
           <p>No cards available.</p>
         )}
