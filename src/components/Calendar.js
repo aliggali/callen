@@ -48,8 +48,8 @@ export const Calendar = ({ userId }) => {
   };
 
   const handleUpdateModalClose = () => {
-    setUpdateModalOn(false);
     fetchEventsFromServer();
+    setUpdateModalOn(false);
   };
 
   const handleEventDrop = (dropInfo) => {
@@ -139,6 +139,7 @@ export const Calendar = ({ userId }) => {
         })
         .catch((error) => console.error("Error updating event:", error));
       fetchEventsFromServer();
+      //window.location.reload();
     }
   };
 
@@ -224,8 +225,8 @@ export const Calendar = ({ userId }) => {
             const specialOption =
               info.event.extendedProps.special == 1 ? "Special " : "";
 
-            // console.log("task: ", taskOption);
-            //console.log("spec: ", specialOption);
+            console.log("task: ", taskOption);
+            console.log("spec: ", specialOption);
             // Determine the title based on task and special options
             const title =
               taskOption && specialOption

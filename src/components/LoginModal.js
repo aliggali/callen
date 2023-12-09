@@ -47,8 +47,8 @@ export const LoginModal = ({ show, onHide, isLoggedIn, onClose }) => {
         onHide();
         isLoggedIn();
         navigate("/home");
-        //window.location.reload();
-        window.location.href = "http://spring90.dothome.co.kr/test";
+        window.location.reload();
+        //window.location.href = "http://spring90.dothome.co.kr/test";
       } else {
         // Password incorrect, set error message
         setErrorMessage("Please check your ID or Password again.");
