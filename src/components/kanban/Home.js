@@ -7,11 +7,10 @@ export const Home = ({ userId }) => {
   const [taskData, setTaskData] = useState([]);
   const [specialData, setSpecialData] = useState([]);
   const [todayData, setTodayData] = useState([]);
-
+//board styles array
   const boardStyles = [
     { backgroundColor: "#A3C0C4", color: "#fff" },
     { backgroundColor: "#E2E191", color: "#fff" },
-    { backgroundColor: "#A3C0C4", color: "#fff" },
   ];
 
   const loadTask = () => {
@@ -83,6 +82,21 @@ export const Home = ({ userId }) => {
       .catch((error) => console.error("Error fetching events:", error));
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    // Check if the time is "00:00:00", and display only the date
+    if (
+      date.getHours() === 0 &&
+      date.getMinutes() === 0 &&
+      date.getSeconds() === 0
+    ) {
+      return date.toLocaleDateString(); // Format date only
+    } else {
+      return date.toLocaleString(); // Format date with time
+    }
+  };
+
   useEffect(() => {
     // Fetch events from the server
     loadTask();
@@ -128,14 +142,14 @@ export const Home = ({ userId }) => {
                 specialData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.title}</td>
-                    <td>{item.start}</td>
+                    <td>{formatDate(item.start)}</td>
                   </tr>
                 ))}
             </tbody>
           </table>
         </div>
 
-        <div className="board" style={boardStyles[2]}>
+        <div className="board" style={boardStyles[0]}>
           <h1>Today To Do</h1>
           <table>
             <thead>
@@ -149,7 +163,7 @@ export const Home = ({ userId }) => {
                 todayData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.title}</td>
-                    <td>{item.end}</td>
+                    <td>{formatDate(item.end)}</td>
                   </tr>
                 ))}
             </tbody>

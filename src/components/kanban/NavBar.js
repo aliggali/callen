@@ -1,6 +1,5 @@
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo-bg-white.png";
 import { LoginModal } from "../../components/LoginModal";
@@ -12,18 +11,12 @@ import ModalForm from "../../components/ModalForm";
 
 export const NavBar = () => {
   const navigate = useNavigate();
-  const [activeLink, setActiveLink] = useState("home");
-  const [scrolled, seScrolled] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [modalLogin, showModalLogin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginSet = window.localStorage.getItem("setLogin");
   const name = window.localStorage.getItem("userName");
   const handleloginModalClose = () => {
-    modalLogin(false);
-  };
-
-  const handleLoginClick = () => {
     showModalLogin(false);
   };
 
@@ -36,6 +29,7 @@ export const NavBar = () => {
     setIsLoggedIn(false);
     console.log("Remove data in localstorage");
     navigate("/about");
+    window.location.href = "http://spring90.dothome.co.kr/test";
   };
 
   const [signUpModalOn, setSignUpModalOn] = useState(false);
@@ -43,23 +37,27 @@ export const NavBar = () => {
   useEffect(() => {
     const onScroll = () => {
       if (window.scrollY > 50) {
-        seScrolled(true);
+        setScrolled(true);
       } else {
-        seScrolled(false);
+        setScrolled(false);
       }
     };
     window.addEventListener("scroll", onScroll);
+    //able scroll
 
     return () => window.removeEventListener("scroll", onScroll);
+    //enable scroll
   }, []);
 
   const renderUserSection = () => {
+    //if login is success, show the user's info
     return (
       <div style={{ verticalAlign: "bottom" }}>
         <h5 className="login-name namebox">{`"${name}"`}</h5>
         <h6 className="login-name">Welcome to Callen</h6>
         <Button
           className="logout-btn"
+          //and show logout btn
           onClick={() => {
             handleLogout();
           }}
@@ -69,7 +67,7 @@ export const NavBar = () => {
       </div>
     );
   };
-  console.log(loginSet);
+  //console.log(loginSet);
   return (
     <>
       <div>
@@ -100,59 +98,31 @@ export const NavBar = () => {
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto">
                   {loginSet ? (
-                    <Nav.Link
-                      as={Link}
-                      className={
-                        activeLink === "home"
-                          ? "active navbar-link"
-                          : "navbar-link"
-                      }
-                      to="/home"
-                    >
+                    <Nav.Link as={Link} className="navbar-link" to="/home">
                       Home
                     </Nav.Link>
                   ) : (
-                    <Nav.Link
-                      as={Link}
-                      className={
-                        activeLink === "home"
-                          ? "active navbar-link"
-                          : "navbar-link"
-                      }
-                      to="/about"
-                    >
+                    <Nav.Link className="navbar-link" to="/about">
                       About
                     </Nav.Link>
                   )}
 
-                  {showLogin || loginSet ? (
-                    <Nav.Link
-                      as={Link}
-                      className={
-                        activeLink === "calendar"
-                          ? "active navbar-link"
-                          : "navbar-link"
-                      }
-                      to="/calendar"
-                    >
+                  {loginSet ? (
+                    <Nav.Link as={Link} className="navbar-link" to="/calendar">
                       Calendar
                     </Nav.Link>
                   ) : (
                     ""
                   )}
-                  {showLogin || loginSet ? (<Nav.Link
-                    as={Link}
-                    className={
-                      activeLink === "task"
-                        ? "active navbar-link"
-                        : "navbar-link"
-                    }
-                    to="/task"
-                  >
-                    Task
-                  </Nav.Link>):("")}
+                  {loginSet ? (
+                    <Nav.Link as={Link} className="navbar-link" to="/task">
+                      Task
+                    </Nav.Link>
+                  ) : (
+                    ""
+                  )}
                   <Nav.Link>
-                    {showLogin || loginSet ? (
+                    {loginSet ? (
                       renderUserSection()
                     ) : (
                       <p onClick={() => showModalLogin(true)}>Sign In</p>

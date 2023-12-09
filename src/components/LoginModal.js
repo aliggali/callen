@@ -41,13 +41,14 @@ export const LoginModal = ({ show, onHide, isLoggedIn, onClose }) => {
       if (data.message === "로그인 성공!") {
         window.localStorage.setItem("userId", data.userId);
         window.localStorage.setItem("userName", data.userName);
-        window.localStorage.setItem("password", data.password);
         window.localStorage.setItem("setLogin", true);
         setResponseMessage(data.message);
         setUserName(userName || data.userName);
         onHide();
         isLoggedIn();
         navigate("/home");
+        //window.location.reload();
+        window.location.href = "http://spring90.dothome.co.kr/test";
       } else {
         // Password incorrect, set error message
         setErrorMessage("Please check your ID or Password again.");

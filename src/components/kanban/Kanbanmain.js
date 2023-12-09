@@ -9,9 +9,14 @@ import Editable from "./Editable/Editable";
 export const Kanbanmain = ({ userId }) => {
   const [boards, setBoards] = useState([]);
   //const [responseMessage, setResponseMessage] = useState("");
+  //Card id
   const [cid, setCid] = useState("");
+  //Board id
   const [bid, setBid] = useState("");
+  //check user have ToDo board or not
   const hasTodoBoard = boards.some((item) => item.kanban_title === "ToDo");
+
+
   const addBoard = (title) => {
     const eventData = {
       user_id: userId,
@@ -47,8 +52,8 @@ export const Kanbanmain = ({ userId }) => {
 
   useEffect(() => {
     // This code will run after each render when cid or bid is updated
-    console.log("End:", cid);
-    console.log("Enter:", bid);
+   // console.log("End:", cid);
+   // console.log("Enter:", bid);
     cardUpdateBoard();
   }, [cid, bid]); // Specify cid and bid as dependencies
 
@@ -167,6 +172,7 @@ export const Kanbanmain = ({ userId }) => {
 
         result.push(newKanban);
       } else {
+        //check the card is existed or not
         const existingCard = existingKanban.cards.find(
           (card) => card.card_id === item.card_id
         );
@@ -196,6 +202,7 @@ export const Kanbanmain = ({ userId }) => {
             card_date: item.card_date,
           });
         } else {
+          //if the card is existed,  check the label and task are existed or not
           if (item.label_id) {
             const existingLabel = existingCard.labels.find(
               (label) => label.label_text === item.label_text

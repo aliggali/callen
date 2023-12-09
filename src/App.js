@@ -1,9 +1,5 @@
-import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Calendar } from "./components/Calendar";
 import { NavBar } from "./components/kanban/NavBar";
 import { Kanbanmain } from "./components/kanban/Kanbanmain";
@@ -14,12 +10,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {
-  const loginstatus = window.localStorage.getItem("setLogin");
-  const [currentLogin, setCurrentLogin] = useState(true);
-  const userId = window.localStorage.getItem("userId");
+  const [loginstatus, setLoginstatus] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // 로그인 정보 가져오기
+  const callLoginStatus = () => {
+    setLoginstatus(window.localStorage.getItem("setLogin"));
+    setUserId(window.localStorage.getItem("userId"));
+    console.log("userId: ", userId);
+    console.log("loginstatus: ", loginstatus);
+  };
 
+  useEffect(() => {
+    // Check the login status from localStorage and update the state
+    callLoginStatus();
+    if (loginstatus) {
+      setIsLoggedIn(true);
+    }
+  }, [loginstatus]); // Add loginstatus as a dependency to re-run the effect when it changes
+//<Router basename="/test">
   return (
     <>
       <Router>
@@ -29,21 +38,13 @@ function App() {
             <Route
               path="/"
               element={
-                currentLogin && loginstatus ? (
-                  <Home userId={userId} />
-                ) : (
-                  <About />
-                )
+                loginstatus && isLoggedIn ? <Home userId={userId} /> : <About />
               }
             />
             <Route
               path="/home"
               element={
-                currentLogin && loginstatus ? (
-                  <Home userId={userId} />
-                ) : (
-                  <About />
-                )
+                loginstatus && isLoggedIn ? <Home userId={userId} /> : <About />
               }
             />
             <Route path="/about" element={<About />} />

@@ -52,6 +52,48 @@ body {
 .calendar-top {
   margin-top: 150px;
 }
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+  color: red;
+}
+
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+  color: blue;
+}
+
+.popoverStyle {
+  z-index: 99999 !important;
+}
+
+a {
+  color: #212529 !important;
+}
+
+.task-special-option {
+  background-color: #ff0000;
+  border-radius: 10%;
+  color: #fff; /* Red color for "Task & Special Option" */
+}
+
+.task-option {
+  background-color: #00ff00;
+  border-radius: 10%;
+  color: #fff; /* Green color for "Task Option" */
+}
+
+.special-option {
+  background-color: #0000ff;
+  border-radius: 10%;
+  color: #fff; /* Blue color for "Special Option" */
+}
+
+.no-option {
+  background-color: #000000;
+  border-radius: 10%;
+  color: #fff; /* Black color for "No Option" */
+}
+
 .modal-container {
   position: fixed !important;
   top: 50%;
@@ -291,7 +333,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 .create-todo-button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #A3C0C4;
+  background-color: #a3c0c4;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -299,5 +341,5 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 }
 
 .create-todo-button:hover {
-  background-color: #E2E191;
+  background-color: #e2e191;
 }

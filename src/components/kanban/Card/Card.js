@@ -36,6 +36,7 @@ function Card(props) {
 
   const calculateDday = (targetDate) => {
     const currentDate = new Date();
+    console.log("today:", currentDate);
     //console.log("currentDate :", currentDate);
     if (!targetDate) {
       return null; // or handle it in a way that makes sense for your application
@@ -43,14 +44,14 @@ function Card(props) {
 
     // Parse the targetDate string into a Date object
     const parts = targetDate.split("-");
-    //console.log("parts :", parts);
+    console.log("parts :", parts);
     const targetDateObj = new Date(parts[0], parts[1] - 1, parts[2]); // months are 0-based
-    //console.log("targetDate :", targetDate);
+    console.log("targetDate :", targetDate);
     // Calculate the difference in days
     const timeDiff = currentDate - targetDateObj;
-    //console.log("timeDiff :", timeDiff);
-    const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-    //console.log("daysRemaining :", daysRemaining);
+    console.log("timeDiff :", timeDiff);
+    const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)) - 1;
+    console.log("daysRemaining :", daysRemaining);
     return daysRemaining;
   };
 
